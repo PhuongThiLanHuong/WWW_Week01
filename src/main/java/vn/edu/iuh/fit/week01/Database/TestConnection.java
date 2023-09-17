@@ -12,11 +12,12 @@ public class TestConnection {
 
         AccountRepository AccRepo = new AccountRepository();
         Account account = new Account();
-        account= AccRepo.logIn(username, password);
+        account= AccRepo.login(username, password);
         if (account == null) {
             System.out.println("wrong password or username !!");
         } else {
-            System.out.println("OK");
+            System.out.println("Ket noi thanh cong");
+            System.out.println(account);
 
 
         }

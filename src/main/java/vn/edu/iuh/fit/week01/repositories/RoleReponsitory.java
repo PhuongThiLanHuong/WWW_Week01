@@ -1,7 +1,6 @@
 package vn.edu.iuh.fit.week01.repositories;
 
-import jakarta.servlet.http.HttpSession;
-import vn.edu.iuh.fit.week01.entities.Account;
+import vn.edu.iuh.fit.week01.Database.ConnectDatabse;
 import vn.edu.iuh.fit.week01.entities.Role;
 
 import java.sql.*;
@@ -10,31 +9,55 @@ import java.util.List;
 import java.util.Optional;
 
 public class RoleReponsitory {
-    private Connection connection;
-    private HttpSession session;
-    public RoleReponsitory(HttpSession session) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        String c = "jdbc:mysql://localhost:3306/mydb?serverTimezone=UTC";
-        connection = DriverManager.getConnection(c,"root","123456");
-        this.session = session;
-    }
-    public void create(Role role)
-    {
+    public boolean createRole(Role role) throws SQLException, ClassNotFoundException {
+        Connection connection= ConnectDatabse.getInstance().getConnection();
         try{
             PreparedStatement statement=connection.prepareStatement("INSERT INTO role values (?,?,?,?) ");
             statement.setString(1, role.getRole_id());
             statement.setString(2, role.getRole_name());
             statement.setString(3, role.getDescription());
-            statement.setInt(4, role.getStatus());
-
-            int rowInserted=statement.executeUpdate();
+            statement.setInt(4,role.getStatus());
+            statement.executeUpdate();
+            return true;
         }catch(SQLException e)
         {
-            throw  new RuntimeException(e);
+            e.printStackTrace();
         }
+        return false;
     }
-    public Optional<Role> getById(String id)
-    {
+    public boolean deleteRole(String id) throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
+        String sql="DELETE FROM role where role_id=?";
+        try{
+            PreparedStatement statement=connection.prepareStatement(sql);
+            statement.setString(1,id);
+            statement.executeUpdate();
+            return true;
+        }catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateRole(Role role) throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
+        String sql="UPDATE role set role_name=?,description=?,status=? where role_id=?";
+        try{
+            PreparedStatement statement=connection.prepareStatement(sql);
+            statement.setString(1,role.getRole_name());
+            statement.setString(2, role.getDescription());
+            statement.setInt(3,role.getStatus());
+            statement.setString(4, role.getRole_id());
+            statement.executeUpdate();
+            return true;
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Optional<Role> getById(String id) throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
         PreparedStatement statement=null;
         try{
             statement=connection.prepareStatement("Select*from role where role_id=?");
@@ -42,7 +65,7 @@ public class RoleReponsitory {
             ResultSet resultSet=statement.executeQuery();
             if(resultSet.next())
             {
-                Role role=new Role(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4));
+               Role role=new Role(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4));
                 return  Optional.of(role);
             }
 
@@ -52,15 +75,15 @@ public class RoleReponsitory {
         }
         return Optional.empty();
     }
-    public List<Role> getAll()
-    {
+    public List<Role> getAll() throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
         PreparedStatement statement=null;
         List<Role>list=new ArrayList<>();
         try{
             statement=connection.prepareStatement("SELECT *FROM role");
-            ResultSet rs=statement.executeQuery();
-            while (rs.next()){
-                Role role=new Role(rs.getString(0),rs.getString(1),rs.getString(2),rs.getInt(3));
+            ResultSet resultSet=statement.executeQuery();
+            while (resultSet.next()){
+                Role role=new Role(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getInt(4));
                 list.add(role);
             }
         }catch(Exception e)

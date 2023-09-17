@@ -11,26 +11,22 @@ import java.util.Optional;
 public class AccountServices {
     @Inject
     private AccountRepository accountRepository;
-    public void create(Account account)
-    {
-        accountRepository.createAccount(account);
+    public boolean create(Account account) throws SQLException, ClassNotFoundException {
+        return accountRepository.createAccount(account);
     }
-    public void detele(String id)
-    {
-        accountRepository.deleteAccount(id);
+    public boolean detele(String id) throws SQLException, ClassNotFoundException {
+        return accountRepository.deleteAccount(id);
     }
-    public void update(Account account)
-    {
-        accountRepository.updateAccount(account);
+    public boolean update(Account account) throws SQLException, ClassNotFoundException {
+        return accountRepository.updateAccount(account);
     }
-    public Optional<Account> getById(String id)
-    {
+    public Optional<Account> getById(String id) throws SQLException, ClassNotFoundException {
         return accountRepository.getById(id);
     }
-    public List<Account> getAll(){
+    public List<Account> getAll() throws SQLException, ClassNotFoundException {
         return accountRepository.getAll();
     }
-    public Account logIn(String username,String password) throws SQLException {
-        return accountRepository.logIn(username,password);
+    public Account logIn(String username,String password)  {
+        return accountRepository.login(username,password);
     }
 }

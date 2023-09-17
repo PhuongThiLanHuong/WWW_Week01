@@ -1,33 +1,43 @@
 package vn.edu.iuh.fit.week01.entities;
 
 public class GrantAccess {
-    private String role_id;
-    private String account_id;
-    private int is_grant;
+    private Role role;
+    private Account account;
+    private Grant isGrant;
     private String note;
 
-    public String getAccount_id() {
-        return account_id;
+    public GrantAccess(Role role, Account account, Grant isGrant, String note) {
+        this.role = role;
+        this.account = account;
+        this.isGrant = isGrant;
+        this.note = note;
     }
 
-    public void setAccount_id(String account_id) {
-        this.account_id = account_id;
+    public GrantAccess() {
     }
 
-    public String getRole_id() {
-        return role_id;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRole_id(String role_id) {
-        this.role_id = role_id;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public int getIs_grant() {
-        return is_grant;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setIs_grant(int is_grant) {
-        this.is_grant = is_grant;
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public Grant getIsGrant() {
+        return isGrant;
+    }
+
+    public void setIsGrant(Grant isGrant) {
+        this.isGrant = isGrant;
     }
 
     public String getNote() {
@@ -37,24 +47,13 @@ public class GrantAccess {
     public void setNote(String note) {
         this.note = note;
     }
-    public GrantAccess()
-    {
-
-    }
-    public GrantAccess(String role_id,String account_id,int is_grant,String note)
-    {
-        this.role_id=role_id;
-        this.account_id=account_id;
-        this.is_grant=is_grant;
-        this.note=note;
-    }
 
     @Override
     public String toString() {
         return "GrantAccess{" +
-                "role_id='" + role_id + '\'' +
-                ", account_id='" + account_id + '\'' +
-                ", is_grant=" + is_grant +
+                "role=" + role +
+                ", account=" + account +
+                ", isGrant=" + isGrant +
                 ", note='" + note + '\'' +
                 '}';
     }

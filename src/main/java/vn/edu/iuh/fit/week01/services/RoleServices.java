@@ -1,24 +1,31 @@
 package vn.edu.iuh.fit.week01.services;
 
-import vn.edu.iuh.fit.week01.entities.Log;
+import jakarta.inject.Inject;
+
 import vn.edu.iuh.fit.week01.entities.Role;
-import vn.edu.iuh.fit.week01.repositories.LogRepository;
 import vn.edu.iuh.fit.week01.repositories.RoleReponsitory;
 
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class RoleServices {
-    private RoleReponsitory roleRepository;
-    public void Create(Role role)
-    {
-        roleRepository.create(role);
+    @Inject
+    private RoleReponsitory roleReponsitory;
+    public boolean create(Role role) throws SQLException, ClassNotFoundException {
+        return roleReponsitory.createRole(role);
     }
-    public Optional<Role> getById(String id)
-    {
-        return roleRepository.getById(id);
+    public boolean detele(String id) throws SQLException, ClassNotFoundException {
+        return roleReponsitory.deleteRole(id);
     }
-    public List<Role> getAll(){
-        return roleRepository.getAll();
+    public boolean update(Role role) throws SQLException, ClassNotFoundException {
+        return roleReponsitory.updateRole(role);
+    }
+    public Optional<Role> getById(String id) throws SQLException, ClassNotFoundException {
+        return roleReponsitory.getById(id);
+    }
+    public List<Role> getAll() throws SQLException, ClassNotFoundException {
+        return roleReponsitory.getAll();
     }
 }

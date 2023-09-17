@@ -1,8 +1,7 @@
 package vn.edu.iuh.fit.week01.repositories;
 
 
-import jakarta.servlet.http.HttpSession;
-import org.checkerframework.checker.units.qual.A;
+
 import vn.edu.iuh.fit.week01.Database.ConnectDatabse;
 import vn.edu.iuh.fit.week01.entities.Account;
 
@@ -12,12 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountRepository {
-    private Connection connection;
-    public AccountRepository() throws SQLException,ClassNotFoundException{
-        this.connection= ConnectDatabse.getInstance().getConnection();
-    }
-    public boolean createAccount(Account account)
-    {
+    public boolean createAccount(Account account) throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
         try{
             PreparedStatement statement=connection.prepareStatement("INSERT INTO account values (?,?,?,?,?,?) ");
             statement.setString(1,account.getAccount_id());
@@ -25,46 +20,49 @@ public class AccountRepository {
             statement.setString(3,account.getPassword());
             statement.setString(4, account.getEmail());
             statement.setString(5, account.getPhone());
-            statement.setInt(6,1);
-            int rowInserted=statement.executeUpdate();
-        }catch(SQLException e)
-        {
-            throw  new RuntimeException(e);
-        }
-        return true;
-    }
-    public boolean deleteAccount(String id)
-    {
-        String sql="DELETE FROM account where account_id=?";
-        try{
-            PreparedStatement statement=this.connection.prepareStatement(sql);
-            statement.setString(1,id);
+            statement.setInt(6,account.getStatus());
             statement.executeUpdate();
+            return true;
         }catch(SQLException e)
         {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
-    public boolean updateAccount(Account account)
-    {
+    public boolean deleteAccount(String id) throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
+        String sql="DELETE FROM account where account_id=?";
+        try{
+            PreparedStatement statement=connection.prepareStatement(sql);
+            statement.setString(1,id);
+            statement.executeUpdate();
+            return true;
+        }catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateAccount(Account account) throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
         String sql="UPDATE account set full_name=?,password=?,email=?,phone=? where account_id=?";
         try{
-            PreparedStatement statement=this.connection.prepareStatement(sql);
+            PreparedStatement statement=connection.prepareStatement(sql);
             statement.setString(1,account.getFull_name());
             statement.setString(2,account.getPassword());
             statement.setString(3, account.getEmail());
             statement.setString(4, account.getPhone());
             statement.setString(5, account.getAccount_id());
             statement.executeUpdate();
+            return true;
         }catch (SQLException e)
         {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
-    public Optional<Account> getById(String id)
-    {
+    public Optional<Account> getById(String id) throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
         PreparedStatement statement=null;
         try{
             statement=connection.prepareStatement("Select*from account where account_id=?");
@@ -82,8 +80,8 @@ public class AccountRepository {
         }
         return Optional.empty();
     }
-    public List<Account> getAll()
-    {
+    public List<Account> getAll() throws SQLException, ClassNotFoundException {
+        Connection connection=ConnectDatabse.getInstance().getConnection();
         PreparedStatement statement=null;
         List<Account>list=new ArrayList<>();
         try{
@@ -99,33 +97,31 @@ public class AccountRepository {
         }
         return list;
     }
-    public Account logIn(String username,String pass) throws SQLException {
-        Account account= null;
-        String sql="select*from account where full_name=?,password=?";
-        PreparedStatement statement=connection.prepareStatement(sql);
-        try{
-            statement.setString(1,username);
-            statement.setString(2,pass);
+    public Account login(String name, String pass){
+        Account a = null;
+        try {
+            Connection connection = ConnectDatabse.getInstance().getConnection();
+            String sql = "select * from account where full_name=? and password=?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1,name);
+            ps.setString(2,pass);
+            ResultSet rs = ps.executeQuery();
 
-            ResultSet resultSet=statement.executeQuery();
-            while(resultSet.next())
-            {
-                String account_id=resultSet.getString("account_id");
-                String full_name=resultSet.getString("full_name");
-                String password=resultSet.getString("password");
-                String email=resultSet.getString("email");
-                String phone=resultSet.getString("phone");
-                Integer status=resultSet.getInt("status");
-                account=new Account(account_id,full_name,password,email,phone,status);
-
+            if(rs.next()){
+                String id = rs.getString(1);
+                String fullName = rs.getString(2);
+                String passWord = rs.getString(3);
+                String email = rs.getString(4);
+                String phone = rs.getString(5);
+               int status = rs.getInt(6);
+                a = new Account(id, fullName, passWord, email, phone, status);
             }
-            resultSet.close();
-            statement.close();
-        }catch(SQLException E)
-        {
-            E.printStackTrace();
+
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
-        return account;
+        return a;
+
     }
 
 
