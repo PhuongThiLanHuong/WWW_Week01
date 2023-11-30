@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Trang chu</title>
     <style>
         button {
             background-color: #04AA6D;
@@ -55,6 +55,7 @@
     <div class="link">
         <a href="createAccount.jsp">Create Account</a>
         <a href="deleteAccount.jsp">Delete Account</a>
+        <a href="updateAccount.jsp">Update Account</a>
     </div>
 <input type="hidden" name="action" value="Logout">
 <button type="submit">Logout</button>

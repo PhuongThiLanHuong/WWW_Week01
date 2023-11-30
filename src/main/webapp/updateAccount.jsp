@@ -1,14 +1,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: taejo
-  Date: 9/28/2023
-  Time: 2:36 PM
+  Date: 11/30/2023
+  Time: 6:32 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Add Account</title>
+    <title>Update Account</title>
 </head>
 <style>
     form {
@@ -34,11 +34,13 @@
     }
 </style>
 <body>
+<div class="container">
 <form action="ControllerServlet" method="post">
-    <h1>Add new Account</h1>
+
+    <h1>Nhap account id can chinh sua:</h1>
     <label for="account_id">Account ID:</label>
     <input type="text" id="account_id" name="account_id" required maxlength="50"><br><br>
-
+    <h2>Nhap cac thong tin can chinh sua:</h2>
     <label for="full_name">Full Name:</label>
     <input type="text" id="full_name" name="full_name" required maxlength="50"><br><br>
 
@@ -53,11 +55,10 @@
 
     <label for="status">Status:</label>
     <input type="number" id="status" name="status" required min="0" max="1"><br><br>
-    <input type="hidden" name="action" value="addAccount">
-    <button type="submit">Add Account</button>
 
+    <input type="hidden" name="action" value="updateAccount">
+    <button type="submit">Update Account</button>
 
 </form>
-
 </body>
 </html>

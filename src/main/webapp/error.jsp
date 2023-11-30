@@ -11,6 +11,7 @@
     <title>Error</title>
 </head>
 <body>
-<h1>Tai khoan khong hop le hoac Viec ban dang lam khong dung</h1>
+<h1>Tai khoan khong hop le.Vui long dang nhap lai thong tin tai khoan</h1>
+<a href="index.jsp">Login</a>
 </body>
 </html>

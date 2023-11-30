@@ -36,7 +36,6 @@ public class ControllerServlet  extends HttpServlet {
                 req.setAttribute("account", account);
                 request = req.getRequestDispatcher("dashboard.jsp");
             } else {
-                // Handle the case when login fails
                 request = req.getRequestDispatcher("error.jsp");
             }
             request.forward(req, resp);
@@ -78,6 +77,24 @@ public class ControllerServlet  extends HttpServlet {
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+        }else if("updateAccount".equals(action)){
+            String account_id = req.getParameter("account_id");
+            String full_name = req.getParameter("full_name");
+            String password = req.getParameter("password");
+            String email = req.getParameter("email");
+            String phone = req.getParameter("phone");
+            Short status = Short.valueOf(req.getParameter("status"));
+
+            Account account = new Account(account_id, full_name, password, email, phone, status);
+
+            try {
+                accountRepository.updateAccount(account);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            resp.sendRedirect("dashboard.jsp");
         }
     }
 
